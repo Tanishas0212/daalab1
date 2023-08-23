@@ -25,7 +25,7 @@ void main() {
     printf("\n Enter the number of edges:");
     scanf("%d", &e);
     for (i = 1; i <= e; i++) {
-        //printf("\n Enter the end vertices of edge %d:", i);
+        printf("\n Enter the end vertices of edge %d:", i);
         scanf("%d%d", &u, &v);
         p[u][v] = 1;
     }
