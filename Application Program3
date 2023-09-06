@@ -6,7 +6,7 @@ connected components within the network. Given a social network
 represented as an adjacency matrix, the task is to find the connected 
 components using the Depth-First Search (DFS) algorithm. The 
 program should implement the DFS algorithm to traverse the 
-network, identify the connected components, and display them
+network, identify the connected components, and display them.
 
 #include <stdio.h>
 #include <stdbool.h>
