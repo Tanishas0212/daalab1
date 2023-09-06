@@ -1,0 +1,86 @@
+In a transportation network, there are multiple cities connected by 
+roads with various distances between them. The task is to find the 
+shortest path from a given source city to all other cities in the 
+network. This information is crucial for effective transportation 
+planning and route optimization. Implement the Bellman-Ford 
+algorithm in C language to solve the transportation planning problem
+to determine the shortest paths and distances from the source city to 
+all other cities in the network.
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+#define MAX_CITIES 100
+#define INF INT_MAX
+
+struct Edge {
+    int source, destination, weight;
+};
+
+struct Graph {
+    int numCities, numEdges;
+    struct Edge edges[MAX_CITIES];
+};
+
+void initialize(struct Graph *graph, int numCities) {
+    graph->numCities = numCities;
+    graph->numEdges = 0;
+}
+
+void addEdge(struct Graph *graph, int source, int destination, int weight) {
+    graph->edges[graph->numEdges].source = source;
+    graph->edges[graph->numEdges].destination = destination;
+    graph->edges[graph->numEdges].weight = weight;
+    graph->numEdges++;
+}
+
+void BellmanFord(struct Graph *graph, int source) {
+    int distances[MAX_CITIES];
+    
+    for (int i = 0; i < graph->numCities; i++) {
+        distances[i] = INF;
+    }
+    distances[source] = 0;
+    
+    for (int i = 1; i <= graph->numCities - 1; i++) {
+        for (int j = 0; j < graph->numEdges; j++) {
+            int u = graph->edges[j].source;
+            int v = graph->edges[j].destination;
+            int weight = graph->edges[j].weight;
+            if (distances[u] != INF && distances[u] + weight < distances[v]) {
+                distances[v] = distances[u] + weight;
+            }
+        }
+    }
+    
+    // Print the shortest distances
+    printf("Shortest distances from city %d:\n", source);
+    for (int i = 0; i < graph->numCities; i++) {
+        printf("City %d: %d\n", i, distances[i]);
+    }
+}
+
+int main() {
+    struct Graph graph;
+    int numCities, numEdges, source;
+    
+    printf("Enter the number of cities and edges: ");
+    scanf("%d %d", &numCities, &numEdges);
+    
+    initialize(&graph, numCities);
+    
+    printf("Enter the edges (source, destination, weight):\n");
+    for (int i = 0; i < numEdges; i++) {
+        int source, destination, weight;
+        scanf("%d %d %d", &source, &destination, &weight);
+        addEdge(&graph, source, destination, weight);
+    }
+    
+    printf("Enter the source city: ");
+    scanf("%d", &source);
+    
+    BellmanFord(&graph, source);
+    
+    return 0;
+}
