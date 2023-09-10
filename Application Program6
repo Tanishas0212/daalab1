@@ -1,3 +1,4 @@
+//APPLICATION PROGRAM 6
 A city needs to plan its infrastructure development by connecting 
 multiple locations with minimum cost. The task is to find the minimum 
 spanning tree (MST) of the city's locations using Prim's algorithm. This 
@@ -9,106 +10,84 @@ minimum cost connections between locations and guide the city's
 infrastructure development.
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
-#include <limits.h>
 
-// Structure to represent an edge in the graph
-struct Edge {
-    int src, dest, weight;
-};
+#define MAX_LOCATIONS 100
+#define INF 999999
 
-// Structure to represent the graph
-struct Graph {
-    int V, E;
-    struct Edge* edge;
-};
+int locations, edges;
+int adjacencyMatrix[MAX_LOCATIONS][MAX_LOCATIONS];
+int parent[MAX_LOCATIONS];
+int minKey[MAX_LOCATIONS];
+bool mstSet[MAX_LOCATIONS];
 
-// Create a new graph
-struct Graph* createGraph(int V, int E) {
-    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
-    graph->V = V;
-    graph->E = E;
-    graph->edge = (struct Edge*)malloc(E * sizeof(struct Edge));
-    return graph;
-}
-
-// Utility function to find the minimum key value
-int minKey(int key[], bool mstSet[], int V) {
-    int min = INT_MAX, min_index;
-
-    for (int v = 0; v < V; v++) {
-        if (!mstSet[v] && key[v] < min) {
-            min = key[v];
-            min_index = v;
+int findMinKey() {
+    int min = INF, minIndex;
+    
+    for (int v = 0; v < locations; v++) {
+        if (!mstSet[v] && minKey[v] < min) {
+            min = minKey[v];
+            minIndex = v;
         }
     }
-
-    return min_index;
+    
+    return minIndex;
 }
 
-// Function to print the MST
-void printMST(struct Graph* graph, int parent[]) {
-    printf("Edge   Weight\n");
-    for (int i = 1; i < graph->V; i++) {
-        printf("%d - %d    %d\n", parent[i], i, graph->edge[i].weight);
+void printMST() {
+    printf("Edge \tWeight\n");
+    for (int i = 1; i < locations; i++) {
+        printf("%d - %d \t%d\n", parent[i], i, adjacencyMatrix[i][parent[i]]);
     }
 }
 
-// Function to find the MST using Prim's algorithm
-void primMST(struct Graph* graph) {
-    int V = graph->V;
-    int parent[V];
-    int key[V];
-    bool mstSet[V];
-
-    for (int i = 0; i < V; i++) {
-        key[i] = INT_MAX;
+void primMST() {
+    for (int i = 0; i < locations; i++) {
+        minKey[i] = INF;
         mstSet[i] = false;
     }
-
-    key[0] = 0;
+    
+    minKey[0] = 0;
     parent[0] = -1;
-
-    for (int count = 0; count < V - 1; count++) {
-        int u = minKey(key, mstSet, V);
+    
+    for (int count = 0; count < locations - 1; count++) {
+        int u = findMinKey();
         mstSet[u] = true;
-
-        for (int v = 0; v < V; v++) {
-            if (graph->edge[u].weight < key[v] && !mstSet[v]) {
+        
+        for (int v = 0; v < locations; v++) {
+            if (adjacencyMatrix[u][v] && !mstSet[v] && adjacencyMatrix[u][v] < minKey[v]) {
                 parent[v] = u;
-                key[v] = graph->edge[u].weight;
+                minKey[v] = adjacencyMatrix[u][v];
             }
         }
     }
-
-    // Print the MST
-    printMST(graph, parent);
+    
+    printMST();
 }
 
 int main() {
-    // Input the number of vertices and edges
-    int V, E;
-    printf("Enter the number of vertices: ");
-    scanf("%d", &V);
-    printf("Enter the number of edges: ");
-    scanf("%d", &E);
-
-    // Create the graph
-    struct Graph* graph = createGraph(V, E);
-
-    // Input the edges and their weights
-    printf("Enter the edges (src dest weight):\n");
-    for (int i = 0; i < E; i++) {
-        scanf("%d %d %d", &graph->edge[i].src, &graph->edge[i].dest, &graph->edge[i].weight);
+    printf("Enter the number of locations: ");
+    scanf("%d", &locations);
+    
+    printf("Enter the number of connections: ");
+    scanf("%d", &edges);
+    
+    for (int i = 0; i < locations; i++) {
+        for (int j = 0; j < locations; j++) {
+            adjacencyMatrix[i][j] = 0;
+        }
     }
-
-    // Find and print the MST
-    primMST(graph);
-
-    // Free allocated memory
-    free(graph->edge);
-    free(graph);
-
+    
+    printf("Enter the connections and their weights:\n");
+    for (int i = 0; i < edges; i++) {
+        int source, destination, weight;
+        scanf("%d %d %d", &source, &destination, &weight);
+        adjacencyMatrix[source][destination] = weight;
+        adjacencyMatrix[destination][source] = weight;
+    }
+    
+    printf("Minimum Spanning Tree:\n");
+    primMST();
+    
     return 0;
 }
