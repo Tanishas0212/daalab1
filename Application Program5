@@ -1,7 +1,14 @@
 APPLICATION PROGRAM 5:
-In a computer network, there are multiple routers connected by communication links. The task is to find the maximum amount of data that can be routed from a source router to a destination router while considering the capacities of the links. This information is 
-crucial for optimizing network traffic and ensuring efficient data routing. The objective of this case study is to implement the Max Flow Min Cut theorem in C language to solve the computer network routing problem. By solving this problem, we can determine the 
-maximum flow of data from a source router to a destination router, considering the link capacities.
+In a computer network, there are multiple routers connected by
+communication links. The task is to find the maximum amount of
+data that can be routed from a source router to a destination router
+while considering the capacities of the links. This information is
+crucial for optimizing network traffic and ensuring efficient data
+routing. The objective of this case study is to implement the Max
+Flow Min Cut theorem in C language to solve the computer network
+routing problem. By solving this problem, we can determine the
+maximum flow of data from a source router to a destination router,
+considering the link capacities.
 
 #include <stdio.h>
 #include <stdbool.h>
