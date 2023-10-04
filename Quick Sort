@@ -56,3 +56,14 @@ int main() {
 
     return 0;
 }
+
+ALGORITHM:
+QUICKSORT (array A, start, end)     
+{  
+ 1 if (start < end)     
+ 2 {  
+3 p = partition(A, start, end)  
+4 QUICKSORT (A, start, p - 1)    
+5 QUICKSORT (A, p + 1, end)    
+6 }   
+}  
