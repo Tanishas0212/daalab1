@@ -5,7 +5,7 @@ case study is to implement the N-Queens algorithm in C Language to
 find all possible arrangements of the queens on the chessboard.
 
 #include <stdio.h>
-#define N 8
+#define N 4
 
 int board[N][N];
 
